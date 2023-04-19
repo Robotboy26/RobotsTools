@@ -8,7 +8,7 @@ def setDebugToggle(value=bool):
 
 def Debug(message=str):
     if DebugToggle == True:
-        print(message)
+        print(str(f"Debug: {message}"))
 
 def LogFile(filename=str):
     global defaultLogFile
@@ -24,4 +24,4 @@ def changeDefaultLogFile(filename=str):
 def Log(message=str, filename=defaultLogFile):
     file = open(filename, "a")
     formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
-    file.write(str(f"{formatted_time}   {message}"))
+    file.write(str(f"Time:{formatted_time}: {message}"))
