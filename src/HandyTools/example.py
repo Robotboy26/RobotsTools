@@ -1,14 +1,21 @@
 import time
 DebugToggle = True
 defaultLogFile = "log.txt"
+defaultLogMessageType = "INFO"
 
 def setDebugToggle(value=bool):
     global DebugToggle
     DebugToggle = value
 
-def Debug(message=str):
+def formattedWrite(message, LogMessageType=defaultLogMessageType):
+    formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
+    outMessage = str(f"[TIME:{formattedTime}] [{LogMessageType}] {message}")
+    return outMessage
+
+
+def Debug(message=str, LogMessageType=defaultLogMessageType):
     if DebugToggle == True:
-        print(str(f"Debug: {message}"))
+        print(formattedWrite(message, LogMessageType))
 
 def LogFile(filename=str):
     global defaultLogFile
@@ -21,7 +28,8 @@ def changeDefaultLogFile(filename=str):
     global defaultLogFile
     defaultLogFile = filename
 
-def Log(message=str, filename=defaultLogFile):
+def Log(message=str, LogMessageType=defaultLogMessageType, filename=defaultLogFile):
+    Debug(message, LogMessageType)
     file = open(filename, "a")
-    formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
-    file.write(str(f"Time:{formatted_time}: {message}"))
+    file.write(formattedWrite(message, LogMessageType))
+    file.write("\n")
