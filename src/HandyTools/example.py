@@ -2,6 +2,7 @@ import time
 DebugToggle = True
 defaultLogFile = "log.txt"
 defaultLogMessageType = "INFO"
+timerCount = 0
 
 def setDebugToggle(value=bool):
     global DebugToggle
@@ -34,15 +35,17 @@ def Log(message=str, LogMessageType=defaultLogMessageType, filename=defaultLogFi
     file.write(formattedWrite(message, LogMessageType))
     file.write("\n")
 
-def startTimer(message=str):
+def startTimer(message=str(timerCount)):
+    global timerCount
     global startTime
     startTime = time.time()
     formattedStartTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(startTime))
-    Log(f"Timer Started {formattedStartTime}", "TIMER", filename=defaultLogFile)
+    Log(f"Timer {message} Started {formattedStartTime}", "TIMER", filename=defaultLogFile)
+    timerCount = timerCount + 1
 
-def stopTimer(message=str):
+def stopTimer(message=str(timerCount)):
     global endTime
     endTime = time.time()
     formattedEndTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(endTime))
     timeTaken = endTime - startTime
-    Log(f"Timer Stopped {formattedEndTime} total time taken (in seconds) {timeTaken}", "TIMER", filename=defaultLogFile)
+    Log(f"Timer {message} Stopped {formattedEndTime} total time taken (in seconds) {timeTaken}", "TIMER", filename=defaultLogFile)
