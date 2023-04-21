@@ -1,1 +1,1 @@
-from RobotsTools.example import Example
+from RobotsTools.example import *
