@@ -34,13 +34,13 @@ def Log(message=str, LogMessageType=defaultLogMessageType, filename=defaultLogFi
     file.write(formattedWrite(message, LogMessageType))
     file.write("\n")
 
-def startTimer():
+def startTimer(message=str):
     global startTime
     startTime = time.time()
     formattedStartTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(startTime))
     Log("Timer Started {formattedStartTime}", "TIMER", filename=defaultLogFile)
 
-def stopTimer():
+def stopTimer(message=str):
     global endTime
     endTime = time.time()
     formattedEndTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(endTime))
