@@ -2,7 +2,7 @@ import time
 DebugToggle = True
 defaultLogFile = "log.txt"
 defaultLogMessageType = "INFO"
-timerCount = 0
+defaultTimerMessage = "defaut timer"
 
 def setDebugToggle(value=bool):
     global DebugToggle
@@ -30,20 +30,18 @@ def changeDefaultLogFile(filename=str):
     defaultLogFile = filename
 
 def Log(message=str, LogMessageType=defaultLogMessageType, filename=defaultLogFile):
-    Debug(message, LogMessageType)
+    Debug(str(message), LogMessageType)
     file = open(filename, "a")
-    file.write(formattedWrite(message, LogMessageType))
+    file.write(formattedWrite(str(message), LogMessageType))
     file.write("\n")
 
-def startTimer(message=str(timerCount)):
-    global timerCount
+def startTimer(message=str(defaultTimerMessage)):
     global startTime
     startTime = time.time()
     formattedStartTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(startTime))
     Log(f"Timer {message} Started {formattedStartTime}", "TIMER", filename=defaultLogFile)
-    timerCount = timerCount + 1
 
-def stopTimer(message=str(timerCount)):
+def stopTimer(message=str(defaultTimerMessage)):
     global endTime
     endTime = time.time()
     formattedEndTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(endTime))
