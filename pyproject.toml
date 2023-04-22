@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "RobotsTools"
-version = "0.0.3"
+version = "0.0.28"
 authors = [
   { name="Robot26", email="robotboygamer26@gmail.com" },
 ]
-description = "A small python package that includes handy tools"
+description = "A small python package that includes handy tools I have made"
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
