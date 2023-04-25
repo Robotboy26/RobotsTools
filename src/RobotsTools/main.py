@@ -1,9 +1,13 @@
 import time
 defaultLogFile = "log.txt"
+defaultDataFile = "data.txt"
 defaultLogMessageType = "INFO"
+defaultTimerLogMessageType = "TIMER"
 defaultTimerMessage = "defaut timer"
 DebugToggle = True
 LogSettings = True
+ClearLogFile = True
+ClearDataFile = True
 
 def setLogSettings(value=True):
     global LogSettings
@@ -12,6 +16,14 @@ def setLogSettings(value=True):
 def setDebugToggle(value=True):
     global DebugToggle
     DebugToggle = value
+
+def setClearLogFile(value=True):
+    global ClearLogFile
+    ClearLogFile = value
+
+def setClearDataFile(value=True):
+    global ClearDataFile
+    ClearDataFile = value
 
 def formattedWrite(message, LogMessageType=defaultLogMessageType):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
@@ -26,9 +38,11 @@ def Debug(message=str, LogMessageType=defaultLogMessageType):
 def LogFile(filename=str):
     global defaultLogFile
     defaultLogFile = filename
-    file = open(filename, "w")
-    file.truncate()
-    file.close()
+    with open(filename, "w") as file:
+        if ClearLogFile == True:
+            file.truncate()
+        else:
+            pass
 
 def changeDefaultLogFile(filename=str):
     global defaultLogFile
@@ -38,10 +52,24 @@ def Log(message=str, LogMessageType=str(defaultLogMessageType), filename=str(def
     if LogSettings == True:
         try:
             Debug(str(message), LogMessageType)
-            file = open(filename, "a")
-            file.write(formattedWrite(str(message), LogMessageType))
-            file.write("\n")
+            with open(filename, "a") as file:
+                file.write(formattedWrite(str(message), LogMessageType))
+                file.write("\n")
         except Exception as e:
             Debug(f"!!! Could not log: {str(e)}, you might need to setLogSettings !!!")
+    else:
+        return
+    
+def LogList(message=str, LogMessageType=str(defaultLogMessageType), filename=str(defaultLogFile)):
+    if LogSettings == True:
+        try:
+            for x in range(len(message)):
+                Debug(f"{str(message[x])} as index {str(x)} of list {[var for var in globals() if globals()[var] is message][0]}", LogMessageType)
+                with open(filename, "a") as file:
+                    file.write(formattedWrite(f"{str(message[x])} as index {str(x)} of list {[var for var in globals() if globals()[var] is message][0]}", LogMessageType))
+                    file.write("\n")
+            return
+        except Exception as e:
+            Debug(f"!!! Could not log: {str(e)}, you might need to setLogSettings !!!", "ERROR")
     else:
         return

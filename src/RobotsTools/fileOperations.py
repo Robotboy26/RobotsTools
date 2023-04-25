@@ -25,6 +25,25 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
     except:
         Log(f"!!! Could not write to file '{filename}', unknown error!!!", "FILE ERROR")
 
+
+def generateDataFile(data, filename=str(defaultDataFile), mode=str("a")):
+    with open(filename, "w") as file:
+        if ClearDataFile == True:
+            file.truncate()
+        else:
+            pass
+    if isinstance(data, list):
+        with open(filename, mode) as file:
+            for x in range(len(data)):
+                file.write(f"{[var for var in globals() if globals()[var] is data][0]};{x}:{data[x]}\n")
+    elif isinstance(data, str):
+        with open(filename, mode) as file:
+            file.write(f"{[var for var in globals() if globals()[var] is data][0]}:{data}")
+    else:
+        Debug("!!!   invalid data type   !!!", "ERROR")
+
+
+
 def createSimpleConfigFile(filename=str):
     try:
         with open(str(filename), 'r') as file:
