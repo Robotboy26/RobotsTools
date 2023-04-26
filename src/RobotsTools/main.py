@@ -1,4 +1,5 @@
 import time
+import threading
 defaultLogFile = "log.txt"
 defaultDataFile = "data.txt"
 defaultLogMessageType = "INFO"
@@ -8,6 +9,8 @@ DebugToggle = True
 LogSettings = True
 ClearLogFile = True
 ClearDataFile = True
+
+lock = threading.Lock()
 
 def setLogSettings(value=True):
     global LogSettings
@@ -24,6 +27,10 @@ def setClearLogFile(value=True):
 def setClearDataFile(value=True):
     global ClearDataFile
     ClearDataFile = value
+
+def changeDefaultLogFile(filename=str):
+    global defaultLogFile
+    defaultLogFile = filename
 
 def formattedWrite(message, LogMessageType=defaultLogMessageType):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
@@ -42,19 +49,16 @@ def LogFile(filename=str):
         if ClearLogFile == True:
             file.truncate()
         else:
-            pass
-
-def changeDefaultLogFile(filename=str):
-    global defaultLogFile
-    defaultLogFile = filename
+            return
 
 def Log(message=str, LogMessageType=str(defaultLogMessageType), filename=str(defaultLogFile)):
     if LogSettings == True:
         try:
             Debug(str(message), LogMessageType)
-            with open(filename, "a") as file:
-                file.write(formattedWrite(str(message), LogMessageType))
-                file.write("\n")
+            with lock:
+                with open(filename, "a") as file:
+                    file.write(formattedWrite(str(message), LogMessageType))
+                    file.write("\n")
         except Exception as e:
             Debug(f"!!! Could not log: {str(e)}, you might need to setLogSettings !!!")
     else:
