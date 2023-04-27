@@ -18,7 +18,7 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
             file.write(str(content))
             if newline == True:
                 file.write("\n")
-        Log(f"Wrote '{str(content)}' to file '{filename}'", "FILE EDIT")
+        Log(f"Wrote '{str(content)}' to file '{filename}'", "FILE WRITE")
     except FileNotFoundError:
         Log(f"!!! Could not write to file '{filename}' it was not found!!!", "FILE ERROR")
 

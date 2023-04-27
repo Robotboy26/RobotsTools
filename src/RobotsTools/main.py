@@ -42,7 +42,7 @@ def Debug(message=str, LogMessageType=defaultLogMessageType):
     if DebugToggle == True:
         print(formattedWrite(message, LogMessageType))
 
-def LogFile(filename=str):
+def LogFile(filename=str, ClearLogFile=bool(ClearLogFile)):
     global defaultLogFile
     defaultLogFile = filename
     with open(filename, "w") as file:
