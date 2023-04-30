@@ -1,0 +1,9 @@
+DebugToggle:True;Bool
+LogSettings:True;Bool
+ClearLogFile:True;Bool
+ClearDataFile:True;Bool
+defaultLogFile:logfile.txt;Str
+defaultDataFile:datafile.txt;Str
+defaultLogMessageType:INFO;Str
+defaultTimerLogMessageType:TIMER;Str
+defaultTimerMessage:default timer;Str

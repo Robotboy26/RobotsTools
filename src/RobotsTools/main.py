@@ -2,47 +2,59 @@ import time
 import threading
 import os
 
-with open("RobotToolsConfig.txt") as file:
-    defaultLogFile = str(file.read().splitlines[file.read().splitlines.index("defaultLogFile")].split(":")[1].split(";")[0])
-    defaultDataFile = str(file.read().splitlines[file.read().splitlines.index("defaultDataFile")].split(":")[1].split(";")[0])
-    defaultLogMessageType = str(file.read().splitlines[file.read().splitlines.index("defaultLogMessageType")].split(":")[1].split(";")[0])
-    defaultTimerLogMessageType = str(file.read().splitlines[file.read().splitlines.index("defaultTimerLogMessageType")].split(":")[1].split(";")[0])
-    defaultTimerMessage = str(file.read().splitlines[file.read().splitlines.index("defaultTimerMessage")].split(":")[1].split(";")[0])
-    DebugToggle = bool(file.read().splitlines[file.read().splitlines.index("DebugToggle")].split(":")[1].split(";")[0])
-    LogSettings = bool(file.read().splitlines[file.read().splitlines.index("LogSettings")].split(":")[1].split(";")[0])
-    ClearLogFile = bool(file.read().splitlines[file.read().splitlines.index("ClearLogFile")].split(":")[1].split(";")[0])
-    ClearDataFile = bool(file.read().splitlines[file.read().splitlines.index("ClearDataFile")].split(":")[1].split(";")[0])
+from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
 
-def test():
-    print(defaultLogFile)
-    print(defaultDataFile)
-    print(defaultLogMessageType)
-    print(defaultTimerLogMessageType)
-    print(defaultTimerMessage)
-    print(DebugToggle)
-    print(LogSettings)
-    print(ClearLogFile)
-    print(ClearDataFile)
+try:
+    with open(defaultConfigFile, 'r') as file:
+        pass
+except:
+    genConfigFile()
+
+with open(defaultConfigFile, 'r') as file:
+    fileSplitlines = []
+    fileRead = file.read().splitlines()
+    y = [item.split(":") for item in fileRead]
+    z = [item[1].split(";") for item in y]
+    y = [item[0] for item in y]
+    for x in range(len(fileRead)):
+        fileSplitlines.append(y[x])
+        fileSplitlines.append(z[x][0])
+        fileSplitlines.append(z[x][1])
+
+    with open("configDataPoints.txt", 'r') as file:    
+        configDataPoints = file.read().splitlines()
+    configDataLocation = []
+
+    defaultLogFile = str(fileSplitlines[fileSplitlines.index("defaultLogFile") + 1])
+    defaultDataFile = str(fileSplitlines[fileSplitlines.index("defaultDataFile") + 1])
+    defaultLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultLogMessageType") + 1])
+    defaultTimerLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultTimerLogMessageType") + 1])
+    defaultTimerMessage = str(fileSplitlines[fileSplitlines.index("defaultTimerMessage") + 1])
+    DebugToggle = bool(fileSplitlines[fileSplitlines.index("DebugToggle") + 1])
+
+    LogSettings = bool(fileSplitlines[fileSplitlines.index("LogSettings") + 1])
+    ClearLogFile = bool(fileSplitlines[fileSplitlines.index("ClearLogFile") + 1])
+    ClearDataFile = bool(fileSplitlines[fileSplitlines.index("ClearDataFile") + 1])
 
 lock = threading.Lock()
 
-def setLogSettings(value=True):
+def setLogSettings(value=True):     # change a value in the config file
     global LogSettings
     LogSettings = value
 
-def setDebugToggle(value=True):
+def setDebugToggle(value=True):     # change a value in the config file
     global DebugToggle
     DebugToggle = value
 
-def setClearLogFile(value=True):
+def setClearLogFile(value=True):     # change a value in the config file
     global ClearLogFile
     ClearLogFile = value
 
-def setClearDataFile(value=True):
+def setClearDataFile(value=True):     # change a value in the config file
     global ClearDataFile
     ClearDataFile = value
 
-def changeDefaultLogFile(filename=str):
+def changeDefaultLogFile(filename=str):     # change a value in the config file
     global defaultLogFile
     defaultLogFile = filename
 

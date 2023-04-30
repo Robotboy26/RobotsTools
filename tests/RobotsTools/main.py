@@ -1,15 +1,35 @@
 import time
 import threading
 import os
-defaultLogFile = "log.txt"
-defaultDataFile = "data.txt"
-defaultLogMessageType = "INFO"
-defaultTimerLogMessageType = "TIMER"
-defaultTimerMessage = "defaut timer"
-DebugToggle = True
-LogSettings = True
-ClearLogFile = True
-ClearDataFile = True
+
+from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
+
+try:
+    with open(defaultConfigFile, 'r') as file:
+        pass
+except:
+    genConfigFile()
+
+with open(defaultConfigFile, 'r') as file:
+    fileSplitlines = []
+    fileRead = file.read().splitlines()
+    y = [item.split(":") for item in fileRead]
+    z = [item[1].split(";") for item in y]
+    y = [item[0] for item in y]
+    for x in range(len(fileRead)):
+        fileSplitlines.append(y[x])
+        fileSplitlines.append(z[x][0])
+        fileSplitlines.append(z[x][1])
+
+    defaultLogFile = str(fileSplitlines[fileSplitlines.index("defaultLogFile") + 1])
+    defaultDataFile = str(fileSplitlines[fileSplitlines.index("defaultDataFile") + 1])
+    defaultLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultLogMessageType") + 1])
+    defaultTimerLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultTimerLogMessageType") + 1])
+    defaultTimerMessage = str(fileSplitlines[fileSplitlines.index("defaultTimerMessage") + 1])
+    DebugToggle = bool(fileSplitlines[fileSplitlines.index("DebugToggle") + 1])
+    LogSettings = bool(fileSplitlines[fileSplitlines.index("LogSettings") + 1])
+    ClearLogFile = bool(fileSplitlines[fileSplitlines.index("ClearLogFile") + 1])
+    ClearDataFile = bool(fileSplitlines[fileSplitlines.index("ClearDataFile") + 1])
 
 lock = threading.Lock()
 

@@ -1,11 +1,11 @@
 import unittest
 import os
 
-#from tests.main import *
+from RobotsTools.__init__ import *
 
 # //////////////////////////////////////////////////////////////////////////////////////////
 
-from tests.main import LogFile, defaultLogFile
+#from tests.main import LogFile, defaultLogFile
 
 class TestLogFile(unittest.TestCase):
     def setUp(self):
@@ -29,11 +29,11 @@ class TestLogFile(unittest.TestCase):
             self.assertEqual(file.read(), "")
 
     def testGlobalDefaultLogFile(self):
+        os.remove(self.filename)
         self.filename = "newtestLog.txt"
-        print(defaultLogFile)
         LogFile(self.filename)
-        print(defaultLogFile)
         self.assertEqual(defaultLogFile, self.filename)
+        os.remove(self.filename)
 
 # //////////////////////////////////////////////////////////////////////////////////////////
 
