@@ -2,7 +2,7 @@ import time
 import threading
 import os
 
-from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
+from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile, changeConfigFile
 
 try:
     with open(defaultConfigFile, 'r') as file:
@@ -57,6 +57,7 @@ def setClearDataFile(value=True):     # change a value in the config file
 def changeDefaultLogFile(filename=str):     # change a value in the config file
     global defaultLogFile
     defaultLogFile = filename
+    changeConfigFile(defaultConfigFile, "defaultLogFile", "defaultConfigFile", "Str")
 
 def formattedWrite(message, LogMessageType=defaultLogMessageType):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))

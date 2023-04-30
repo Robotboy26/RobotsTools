@@ -1,5 +1,5 @@
-from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
 import os
+from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
 
 if os.path.exists(defaultConfigFile):
     pass

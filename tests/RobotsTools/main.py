@@ -2,7 +2,7 @@ import time
 import threading
 import os
 
-from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
+from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile, changeConfigFile
 
 try:
     with open(defaultConfigFile, 'r') as file:
@@ -21,37 +21,43 @@ with open(defaultConfigFile, 'r') as file:
         fileSplitlines.append(z[x][0])
         fileSplitlines.append(z[x][1])
 
+    with open(defaultConfigFile, 'r') as file:    
+        configDataPoints = file.read().splitlines()
+    configDataLocation = []
+
     defaultLogFile = str(fileSplitlines[fileSplitlines.index("defaultLogFile") + 1])
     defaultDataFile = str(fileSplitlines[fileSplitlines.index("defaultDataFile") + 1])
     defaultLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultLogMessageType") + 1])
     defaultTimerLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultTimerLogMessageType") + 1])
     defaultTimerMessage = str(fileSplitlines[fileSplitlines.index("defaultTimerMessage") + 1])
     DebugToggle = bool(fileSplitlines[fileSplitlines.index("DebugToggle") + 1])
+
     LogSettings = bool(fileSplitlines[fileSplitlines.index("LogSettings") + 1])
     ClearLogFile = bool(fileSplitlines[fileSplitlines.index("ClearLogFile") + 1])
     ClearDataFile = bool(fileSplitlines[fileSplitlines.index("ClearDataFile") + 1])
 
 lock = threading.Lock()
 
-def setLogSettings(value=True):
+def setLogSettings(value=True):     # change a value in the config file
     global LogSettings
     LogSettings = value
 
-def setDebugToggle(value=True):
+def setDebugToggle(value=True):     # change a value in the config file
     global DebugToggle
     DebugToggle = value
 
-def setClearLogFile(value=True):
+def setClearLogFile(value=True):     # change a value in the config file
     global ClearLogFile
     ClearLogFile = value
 
-def setClearDataFile(value=True):
+def setClearDataFile(value=True):     # change a value in the config file
     global ClearDataFile
     ClearDataFile = value
 
-def changeDefaultLogFile(filename=str):
+def changeDefaultLogFile(filename=str):     # change a value in the config file
     global defaultLogFile
     defaultLogFile = filename
+    changeConfigFile(defaultLogFile, "defaultLogFile", defaultConfigFile, "Str")
 
 def formattedWrite(message, LogMessageType=defaultLogMessageType):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
