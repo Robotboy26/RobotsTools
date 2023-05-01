@@ -2,7 +2,7 @@ import time
 import threading
 import os
 
-from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile, changeConfigFile
+from RobotsTools.genConfigFile import *
 
 try:
     with open(defaultConfigFile, 'r') as file:
@@ -11,30 +11,30 @@ except:
     genConfigFile()
 
 with open(defaultConfigFile, 'r') as file:
-    fileSplitlines = []
-    fileRead = file.read().splitlines()
-    y = [item.split(":") for item in fileRead]
-    z = [item[1].split(";") for item in y]
-    y = [item[0] for item in y]
-    for x in range(len(fileRead)):
-        fileSplitlines.append(y[x])
-        fileSplitlines.append(z[x][0])
-        fileSplitlines.append(z[x][1])
+        fileSplitlines = []
+        fileRead = file.read().splitlines()
+        y = [item.split(":") for item in fileRead]
+        z = [item[1].split(";") for item in y]
+        y = [item[0] for item in y]
+        for x in range(len(fileRead)):
+            fileSplitlines.append(y[x])
+            fileSplitlines.append(z[x][0])
+            fileSplitlines.append(z[x][1])
 
-    with open("configDataPoints.txt", 'r') as file:    
-        configDataPoints = file.read().splitlines()
-    configDataLocation = []
+        with open(defaultConfigFile, 'r') as file:    
+            configDataPoints = file.read().splitlines()
+        configDataLocation = []
 
-    defaultLogFile = str(fileSplitlines[fileSplitlines.index("defaultLogFile") + 1])
-    defaultDataFile = str(fileSplitlines[fileSplitlines.index("defaultDataFile") + 1])
-    defaultLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultLogMessageType") + 1])
-    defaultTimerLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultTimerLogMessageType") + 1])
-    defaultTimerMessage = str(fileSplitlines[fileSplitlines.index("defaultTimerMessage") + 1])
-    DebugToggle = bool(fileSplitlines[fileSplitlines.index("DebugToggle") + 1])
+        defaultLogFile = str(fileSplitlines[fileSplitlines.index("defaultLogFile") + 1])
+        defaultDataFile = str(fileSplitlines[fileSplitlines.index("defaultDataFile") + 1])
+        defaultLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultLogMessageType") + 1])
+        defaultTimerLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultTimerLogMessageType") + 1])
+        defaultTimerMessage = str(fileSplitlines[fileSplitlines.index("defaultTimerMessage") + 1])
+        DebugToggle = bool(fileSplitlines[fileSplitlines.index("DebugToggle") + 1])
 
-    LogSettings = bool(fileSplitlines[fileSplitlines.index("LogSettings") + 1])
-    ClearLogFile = bool(fileSplitlines[fileSplitlines.index("ClearLogFile") + 1])
-    ClearDataFile = bool(fileSplitlines[fileSplitlines.index("ClearDataFile") + 1])
+        LogSettings = bool(fileSplitlines[fileSplitlines.index("LogSettings") + 1])
+        ClearLogFile = bool(fileSplitlines[fileSplitlines.index("ClearLogFile") + 1])
+        ClearDataFile = bool(fileSplitlines[fileSplitlines.index("ClearDataFile") + 1])
 
 lock = threading.Lock()
 
@@ -58,14 +58,16 @@ def changeDefaultLogFile(filename=str):     # change a value in the config file
     global defaultLogFile
     defaultLogFile = filename
     changeConfigFile(defaultConfigFile, "defaultLogFile", "defaultConfigFile", "Str")
+    print(loadConfigFile("defaultLogFile"))
 
-def formattedWrite(message, LogMessageType=defaultLogMessageType):
+
+def formattedWrite(message, LogMessageType=loadConfigFile("defaultLogMessageType")):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
     outMessage = str(f"[{formattedTime}] [{LogMessageType}] {message}")
     return outMessage
 
 
-def Debug(message=str, LogMessageType=defaultLogMessageType):
+def Debug(message=str, LogMessageType=loadConfigFile("defaultLogMessageType")):
     if DebugToggle == True:
         print(formattedWrite(message, LogMessageType))
 
@@ -83,7 +85,7 @@ def LogFile(filename=str, ClearLogFile=bool(ClearLogFile)):
             pass
         return "File created"
 
-def Log(message=str, LogMessageType=str(defaultLogMessageType), filename=str(defaultLogFile)):
+def Log(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType")), filename=str(defaultLogFile)):
     if LogSettings == True:
         try:
             Debug(str(message), LogMessageType)
@@ -98,7 +100,7 @@ def Log(message=str, LogMessageType=str(defaultLogMessageType), filename=str(def
     else:
         return "LogSettings is False"
     
-def LogList(message=str, LogMessageType=str(defaultLogMessageType), filename=str(defaultLogFile)):
+def LogList(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType")), filename=str(defaultLogFile)):
     if LogSettings == True:
         try:
             for x in range(len(message)):
