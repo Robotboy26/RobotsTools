@@ -32,7 +32,7 @@ class TestLogFile(unittest.TestCase):
         os.remove(self.filename)
         self.filename = "newtestLog.txt"
         LogFile(self.filename)
-        self.assertEqual(defaultLogFile, self.filename)
+        self.assertEqual(loadConfigFile("defaultLogFile"), self.filename)
         os.remove(self.filename)
 
 # //////////////////////////////////////////////////////////////////////////////////////////

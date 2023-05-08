@@ -1,58 +1,57 @@
-defaultConfigFile = "RobotToolsConfig.txt" # do not change unless you also change in main.py
+import configparser
+defaultConfigFile = "RobotToolsConfig.ini" # do not change unless you also change in main.py
 
 def genConfigFile():
-    with open(defaultConfigFile, 'w') as file:
-        pass
+    config = configparser.ConfigParser()
+    config.add_section("defaultValues")
+    
+    config.set("defaultValues", "defaultLogFile", "logFile.txt")
+    config.set("defaultValues", "defaultDataFile", "dataFile.txt")
+    config.set("defaultValues", "defaultLogMessageType", "INFO")
+    config.set("defaultValues", "defaultTimerLogMessageType", "TIMER")
+    config.set("defaultValues", "defaultTimerMessage", "default timer")
+    config.set("defaultValues", "DebugToggle", "True")
+    config.set("defaultValues", "LogSettings", "True")
+    config.set("defaultValues", "ClearLogFile", "True")
+    config.set("defaultValues", "ClearDataFile", "True")
 
-    with open(defaultConfigFile, 'a') as file:
-        file.write("DebugToggle:True;Bool\n")
-        file.write("LogSettings:True;Bool\n")
-        file.write("ClearLogFile:True;Bool\n")
-        file.write("ClearDataFile:True;Bool\n")
-        file.write("defaultLogFile:logfile.txt;Str\n")
-        file.write("defaultDataFile:datafile.txt;Str\n")
-        file.write("defaultLogMessageType:INFO;Str\n")
-        file.write("defaultTimerLogMessageType:TIMER;Str\n")
-        file.write("defaultTimerMessage:default timer;Str\n")
+    with open(defaultConfigFile, "w") as configFile:
+        config.write(configFile)
 
 def changeConfigFile(filename=str, id=str, content=str, type=str): # add logging
-    with open(filename, 'r') as file:
-        fileContent = file.read().splitlines()
+    config = configparser.ConfigParser()
+    config.read(filename)
 
-    for x in range(len(fileContent)):
-        if fileContent[x].split(";")[0] == id:
-            fileContent[x] = f"{id}:{content};{type}"
-            break
+    config.set('defaultValues', str(id), str(content))
 
-    with open(filename, 'w') as file:
-        for x in range(len(fileContent)):
-            file.write(f"{fileContent[x]}\n")
+    with open(defaultConfigFile, "w") as configFile:
+        config.write(configFile)
 
 def loadConfigFile(request):
-    with open(defaultConfigFile, 'r') as file:
-        fileSplitlines = []
-        fileRead = file.read().splitlines()
-        y = [item.split(":") for item in fileRead]
-        z = [item[1].split(";") for item in y]
-        y = [item[0] for item in y]
-        for x in range(len(fileRead)):
-            fileSplitlines.append(y[x])
-            fileSplitlines.append(z[x][0])
-            fileSplitlines.append(z[x][1])
+    # Create a ConfigParser object and read the config file
+    config = configparser.ConfigParser()
+    config.read(defaultConfigFile)
 
-        with open(defaultConfigFile, 'r') as file:    
-            configDataPoints = file.read().splitlines()
-        configDataLocation = []
+    # Retrieve the requested value from the config file
+    if request == "defaultLogFile":
+        value = config.get('defaultValues', 'defaultLogFile')
+    elif request == "defaultDataFile":
+        value = config.get('defaultValues', 'defaultDataFile')
+    elif request == "defaultLogMessageType":
+        value = config.get('defaultValues', 'defaultLogMessageType')
+    elif request == "defaultTimerLogMessageType":
+        value = config.get('defaultValues', 'defaultTimerLogMessageType')
+    elif request == "defaultTimerMessage":
+        value = config.get('defaultValues', 'defaultTimerMessage')
+    elif request == "DebugToggle":
+        value = config.getboolean('defaultValues', 'DebugToggle')
+    elif request == "LogSettings":
+        value = config.getboolean('defaultValues', 'LogSettings')
+    elif request == "ClearLogFile":
+        value = config.getboolean('defaultValues', 'ClearLogFile')
+    elif request == "ClearDataFile":
+        value = config.getboolean('defaultValues', 'ClearDataFile')
+    else:
+        raise ValueError(f"Invalid request: {request}")
 
-        defaultLogFile = str(fileSplitlines[fileSplitlines.index("defaultLogFile") + 1])
-        defaultDataFile = str(fileSplitlines[fileSplitlines.index("defaultDataFile") + 1])
-        defaultLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultLogMessageType") + 1])
-        defaultTimerLogMessageType = str(fileSplitlines[fileSplitlines.index("defaultTimerLogMessageType") + 1])
-        defaultTimerMessage = str(fileSplitlines[fileSplitlines.index("defaultTimerMessage") + 1])
-        DebugToggle = bool(fileSplitlines[fileSplitlines.index("DebugToggle") + 1])
-
-        LogSettings = bool(fileSplitlines[fileSplitlines.index("LogSettings") + 1])
-        ClearLogFile = bool(fileSplitlines[fileSplitlines.index("ClearLogFile") + 1])
-        ClearDataFile = bool(fileSplitlines[fileSplitlines.index("ClearDataFile") + 1])
-        requestInfo = locals()[request]
-        return requestInfo
+    return value

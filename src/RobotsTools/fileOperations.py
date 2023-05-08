@@ -26,7 +26,7 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
         Log(f"!!! Could not write to file '{filename}', unknown error!!!", "FILE ERROR")
 
 
-def generateDataFile(data, filename=str(defaultDataFile), mode=str("a")):
+def generateDataFile(data, filename=str(loadConfigFile("defaultDataFile")), mode=str("a")):
     with open(filename, "w") as file:
         if ClearDataFile == True:
             file.truncate()
