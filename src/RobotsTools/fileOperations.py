@@ -28,7 +28,7 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
 
 def generateDataFile(data, filename=str(loadConfigFile("defaultDataFile")), mode=str("a")):
     with open(filename, "w") as file:
-        if ClearDataFile == True:
+        if loadConfigFile("ClearDataFile") == True:
             file.truncate()
         else:
             pass

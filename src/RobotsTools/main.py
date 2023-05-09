@@ -12,25 +12,25 @@ except:
 
 lock = threading.Lock()
 
-def setLogSettings(value=True):     # change a value in the config file
-    global LogSettings
-    LogSettings = value
+def setLogSettings(value=True):
+    changeConfigFile(defaultConfigFile, "LogSettings", value, "Str")
+    Log(loadConfigFile("LogSettings"), "CONFIG CHANGE")
 
-def setDebugToggle(value=True):     # change a value in the config file
-    global DebugToggle
-    DebugToggle = value
+def setDebugToggle(value=True):
+    changeConfigFile(defaultConfigFile, "DebugToggle", value, "Str")
+    Log(loadConfigFile("DebugToggle"), "CONFIG CHANGE")
 
-def setClearLogFile(value=True):     # change a value in the config file
-    global ClearLogFile
-    ClearLogFile = value
+def setClearLogFile(value=True):
+    changeConfigFile(defaultConfigFile, "ClearLogFile", value, "Str")
+    Log(loadConfigFile("ClearLogFile"), "CONFIG CHANGE")
 
-def setClearDataFile(value=True):     # change a value in the config file
-    global ClearDataFile
-    ClearDataFile = value
+def setClearDataFile(value=True):
+    changeConfigFile(defaultConfigFile, "ClearDataFile", value, "Str")
+    Log(loadConfigFile("ClearDataFile"), "CONFIG CHANGE")
 
-def changeDefaultLogFile(filename=str):     # change a value in the config file
+def changeDefaultLogFile(filename=str):
     changeConfigFile(defaultConfigFile, "defaultLogFile", filename, "Str")
-    print(loadConfigFile("defaultLogFile"))
+    Log(loadConfigFile("defaultLogFile"), "CONFIG CHANGE")
 
 
 def formattedWrite(message, LogMessageType=loadConfigFile("defaultLogMessageType")):
@@ -40,7 +40,7 @@ def formattedWrite(message, LogMessageType=loadConfigFile("defaultLogMessageType
 
 
 def Debug(message=str, LogMessageType=loadConfigFile("defaultLogMessageType")):
-    if DebugToggle == True:
+    if loadConfigFile("DebugToggle") == True:
         print(formattedWrite(message, LogMessageType))
 
 def LogFile(filename=str, ClearLogFile=bool(loadConfigFile("ClearLogFile"))):
@@ -58,7 +58,8 @@ def LogFile(filename=str, ClearLogFile=bool(loadConfigFile("ClearLogFile"))):
         return "File created"
 
 def Log(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType")), filename=str(loadConfigFile("defaultLogFile"))):
-    if LogSettings == True:
+    LogMessageType = LogMessageType.upper()
+    if loadConfigFile("LogSettings") == True:
         try:
             Debug(str(message), LogMessageType)
             with lock:
@@ -73,7 +74,7 @@ def Log(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType"))
         return "LogSettings is False"
     
 def LogList(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType")), filename=str(loadConfigFile("defaultLogFile"))):
-    if LogSettings == True:
+    if loadConfigFile("LogSettings") == True:
         try:
             for x in range(len(message)):
                 Debug(f"{str(message[x])} as index {str(x)} of list {[var for var in globals() if globals()[var] is message][0]}", LogMessageType)
