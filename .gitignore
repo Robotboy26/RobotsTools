@@ -1,3 +1,4 @@
 .pypirc
 tests/RobotsTools
 *.pyc
+dist
