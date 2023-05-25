@@ -33,25 +33,9 @@ def loadConfigFile(request):
     config.read(defaultConfigFile)
 
     # Retrieve the requested value from the config file
-    if request == "defaultLogFile":
-        value = config.get('defaultValues', 'defaultLogFile')
-    elif request == "defaultDataFile":
-        value = config.get('defaultValues', 'defaultDataFile')
-    elif request == "defaultLogMessageType":
-        value = config.get('defaultValues', 'defaultLogMessageType')
-    elif request == "defaultTimerLogMessageType":
-        value = config.get('defaultValues', 'defaultTimerLogMessageType')
-    elif request == "defaultTimerMessage":
-        value = config.get('defaultValues', 'defaultTimerMessage')
-    elif request == "DebugToggle":
-        value = config.getboolean('defaultValues', 'DebugToggle')
-    elif request == "LogSettings":
-        value = config.getboolean('defaultValues', 'LogSettings')
-    elif request == "ClearLogFile":
-        value = config.getboolean('defaultValues', 'ClearLogFile')
-    elif request == "ClearDataFile":
-        value = config.getboolean('defaultValues', 'ClearDataFile')
-    else:
-        raise ValueError(f"Invalid request: {request}")
+    try:
+        value = config.get('defaultValues', str(request))
+    except Exception as e:
+        raise ValueError(f"Invalid request: {e}")
 
     return value

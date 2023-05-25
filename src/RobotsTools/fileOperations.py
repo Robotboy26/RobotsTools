@@ -12,6 +12,8 @@ def saveFile(filename=str, content=str, mode=str("w")):
         file.write(content)
     Log(f"Saved file '{filename}' with content '{content}'", "FILE WRITE")
 
+# fix these with the new config file system
+
 def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
     try:
         with open(str(filename), mode) as file:
