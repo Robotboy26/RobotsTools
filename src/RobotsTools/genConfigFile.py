@@ -33,7 +33,6 @@ def getConfigValue(request, section='default'):
     config = configparser.ConfigParser()
     config.read(defaultConfigFile)
 
-
     try:
         value = config.get(section, request)
     except Exception as e:
