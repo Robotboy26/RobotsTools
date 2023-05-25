@@ -5,7 +5,7 @@ from RobotsTools.__init__ import *
 
 # //////////////////////////////////////////////////////////////////////////////////////////
 
-#from tests.main import LogFile, defaultLogFile
+# from tests.main import LogFile, defaultLogFile
 
 class TestLogFile(unittest.TestCase):
     def setUp(self):
@@ -32,22 +32,22 @@ class TestLogFile(unittest.TestCase):
         os.remove(self.filename)
         self.filename = "newtestLog.txt"
         LogFile(self.filename)
-        self.assertEqual(loadConfigFile("defaultLogFile"), self.filename)
+        self.assertEqual(getConfigValue("defaultLogFile"), self.filename)
         os.remove(self.filename)
 
 # //////////////////////////////////////////////////////////////////////////////////////////
 
-class TestLog(unittest.TestCase):
-    def setUp(self):
-        self.defaultLogFile = "log.txt"
-        self.defaultLogMessageType = "INFO"
-        self.logSettings = True
-
-    def testLogSucceeded(self):
-        pass
-
-    def testLogFailed(self):
-        pass
+#class TestLog(unittest.TestCase):
+#    def setUp(self):
+#        self.defaultLogFile = "log.txt"
+#        self.defaultLogMessageType = "INFO"
+#        self.logSettings = True
+#
+#    def testLogSucceeded(self):
+#        pass
+#
+#    def testLogFailed(self):
+#        pass
 
 if __name__ == '__main__':
     unittest.main()

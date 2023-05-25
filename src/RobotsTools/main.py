@@ -14,36 +14,36 @@ lock = threading.Lock()
 
 def setLogSettings(value=True):
     changeConfigFile(defaultConfigFile, "LogSettings", value, "Str")
-    Log(loadConfigFile("LogSettings"), "CONFIG CHANGE")
+    Log(getConfigValue("LogSettings"), "CONFIG CHANGE")
 
 def setDebugToggle(value=True):
     changeConfigFile(defaultConfigFile, "DebugToggle", value, "Str")
-    Log(loadConfigFile("DebugToggle"), "CONFIG CHANGE")
+    Log(getConfigValue("DebugToggle"), "CONFIG CHANGE")
 
 def setClearLogFile(value=True):
     changeConfigFile(defaultConfigFile, "ClearLogFile", value, "Str")
-    Log(loadConfigFile("ClearLogFile"), "CONFIG CHANGE")
+    Log(getConfigValue("ClearLogFile"), "CONFIG CHANGE")
 
 def setClearDataFile(value=True):
     changeConfigFile(defaultConfigFile, "ClearDataFile", value, "Str")
-    Log(loadConfigFile("ClearDataFile"), "CONFIG CHANGE")
+    Log(getConfigValue("ClearDataFile"), "CONFIG CHANGE")
 
 def changeDefaultLogFile(filename=str):
     changeConfigFile(defaultConfigFile, "defaultLogFile", filename, "Str")
-    Log(loadConfigFile("defaultLogFile"), "CONFIG CHANGE")
+    Log(getConfigValue("defaultLogFile"), "CONFIG CHANGE")
 
 
-def formattedWrite(message, LogMessageType=loadConfigFile("defaultLogMessageType")):
+def formattedWrite(message, LogMessageType=getConfigValue("defaultLogMessageType")):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
     outMessage = str(f"[{formattedTime}] [{LogMessageType}] {message}")
     return outMessage
 
 
-def Debug(message=str, LogMessageType=loadConfigFile("defaultLogMessageType")):
-    if loadConfigFile("DebugToggle") == True:
+def Debug(message=str, LogMessageType=getConfigValue("defaultLogMessageType")):
+    if getConfigValue("DebugToggle") == True:
         print(formattedWrite(message, LogMessageType))
 
-def LogFile(filename=str, ClearLogFile=bool(loadConfigFile("ClearLogFile"))):
+def LogFile(filename=str, ClearLogFile=bool(getConfigValue("ClearLogFile"))):
     changeDefaultLogFile(filename)
     if os.path.exists(filename):
         if ClearLogFile == True:
@@ -57,9 +57,9 @@ def LogFile(filename=str, ClearLogFile=bool(loadConfigFile("ClearLogFile"))):
             pass
         return "File created"
 
-def Log(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType")), filename=str(loadConfigFile("defaultLogFile"))):
+def Log(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
     LogMessageType = LogMessageType.upper()
-    if loadConfigFile("LogSettings") == True:
+    if getConfigValue("LogSettings") == True:
         try:
             Debug(str(message), LogMessageType)
             with lock:
@@ -73,8 +73,8 @@ def Log(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType"))
     else:
         return "LogSettings is False"
     
-def LogList(message=str, LogMessageType=str(loadConfigFile("defaultLogMessageType")), filename=str(loadConfigFile("defaultLogFile"))):
-    if loadConfigFile("LogSettings") == True:
+def LogList(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
+    if getConfigValue("LogSettings") == True:
         try:
             for x in range(len(message)):
                 Debug(f"{str(message[x])} as index {str(x)} of list {[var for var in globals() if globals()[var] is message][0]}", LogMessageType)

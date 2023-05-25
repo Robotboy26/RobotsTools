@@ -3,17 +3,18 @@ defaultConfigFile = "RobotToolsConfig.ini" # do not change unless you also chang
 
 def genConfigFile():
     config = configparser.ConfigParser()
-    config.add_section("defaultValues")
+    defaultSection = 'default'
+    config.add_section(defaultSection)
     
-    config.set("defaultValues", "defaultLogFile", "logFile.txt")
-    config.set("defaultValues", "defaultDataFile", "dataFile.txt")
-    config.set("defaultValues", "defaultLogMessageType", "INFO")
-    config.set("defaultValues", "defaultTimerLogMessageType", "TIMER")
-    config.set("defaultValues", "defaultTimerMessage", "default timer")
-    config.set("defaultValues", "DebugToggle", "True")
-    config.set("defaultValues", "LogSettings", "True")
-    config.set("defaultValues", "ClearLogFile", "True")
-    config.set("defaultValues", "ClearDataFile", "True")
+    config.set(defaultSection, "defaultLogFile", "logFile.txt")
+    config.set(defaultSection, "defaultDataFile", "dataFile.txt")
+    config.set(defaultSection, "defaultLogMessageType", "INFO")
+    config.set(defaultSection, "defaultTimerLogMessageType", "TIMER")
+    config.set(defaultSection, "defaultTimerMessage", "default timer")
+    config.set(defaultSection, "DebugToggle", "True")
+    config.set(defaultSection, "LogSettings", "True")
+    config.set(defaultSection, "ClearLogFile", "True")
+    config.set(defaultSection, "ClearDataFile", "True")
 
     with open(defaultConfigFile, "w") as configFile:
         config.write(configFile)
@@ -27,31 +28,15 @@ def changeConfigFile(filename=str, id=str, content=str, type=str): # add logging
     with open(defaultConfigFile, "w") as configFile:
         config.write(configFile)
 
-def loadConfigFile(request):
+def getConfigValue(request, section='default'):
     # Create a ConfigParser object and read the config file
     config = configparser.ConfigParser()
     config.read(defaultConfigFile)
 
-    # Retrieve the requested value from the config file
-    if request == "defaultLogFile":
-        value = config.get('defaultValues', 'defaultLogFile')
-    elif request == "defaultDataFile":
-        value = config.get('defaultValues', 'defaultDataFile')
-    elif request == "defaultLogMessageType":
-        value = config.get('defaultValues', 'defaultLogMessageType')
-    elif request == "defaultTimerLogMessageType":
-        value = config.get('defaultValues', 'defaultTimerLogMessageType')
-    elif request == "defaultTimerMessage":
-        value = config.get('defaultValues', 'defaultTimerMessage')
-    elif request == "DebugToggle":
-        value = config.getboolean('defaultValues', 'DebugToggle')
-    elif request == "LogSettings":
-        value = config.getboolean('defaultValues', 'LogSettings')
-    elif request == "ClearLogFile":
-        value = config.getboolean('defaultValues', 'ClearLogFile')
-    elif request == "ClearDataFile":
-        value = config.getboolean('defaultValues', 'ClearDataFile')
-    else:
-        raise ValueError(f"Invalid request: {request}")
+
+    try:
+        value = config.get(section, request)
+    except Exception as e:
+        quit(f"!!! Could not load config file, error: {e} !!!")
 
     return value

@@ -1,5 +1,6 @@
 from RobotsTools.main import *
 
+# in the config file make it for .ini files instead of how it is now
 
 def loadFile(filename=str, mode=str("r")):
     with open(str(filename), mode) as file:
@@ -26,9 +27,9 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
         Log(f"!!! Could not write to file '{filename}', unknown error!!!", "FILE ERROR")
 
 
-def generateDataFile(data, filename=str(loadConfigFile("defaultDataFile")), mode=str("a")):
+def generateDataFile(data, filename=str(getConfigValue("defaultDataFile")), mode=str("a")):
     with open(filename, "w") as file:
-        if loadConfigFile("ClearDataFile") == True:
+        if getConfigValue("ClearDataFile") == True:
             file.truncate()
         else:
             pass

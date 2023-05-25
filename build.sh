@@ -1,5 +1,6 @@
 ./runTests.sh
 rm dist/*
+rm RobotToolsConfig.ini
 python3 -m build
 python3 -m twine upload -r testpypi dist/* --verbose
 echo "pip install -i https://test.pypi.org/simple/ RobotsTools==$(head -n 7 pyproject.toml | tail -n 1 | sed 's/.*"\([^"]*\)".*/\1/')"
