@@ -1,3 +1,4 @@
 .pypirc
 tests/RobotsTools
-tests/__pycache__
+*.pyc
+dist
