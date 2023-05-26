@@ -1,5 +1,10 @@
 import os
-from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile
+from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile, dataLocation
+
+if os.path.exists(dataLocation):
+    pass
+else:
+    os.mkdir(dataLocation)
 
 if os.path.exists(defaultConfigFile):
     pass

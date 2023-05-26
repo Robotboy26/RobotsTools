@@ -2,4 +2,4 @@
 tests/RobotsTools
 *.pyc
 dist
-RobotsToolsConfig.ini
+RobotsToolsData

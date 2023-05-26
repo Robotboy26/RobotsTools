@@ -5,13 +5,13 @@ from RobotsTools.main import *
 def loadFile(filename=str, mode=str("r")):
     with open(str(filename), mode) as file:
         fileContent = file.read().splitlines()
-    Log(f"Loaded file '{filename}' with content '{fileContent}'", "FILE LOAD")
+    log(f"Loaded file '{filename}' with content '{fileContent}'", "FILE LOAD")
     return fileContent
 
 def saveFile(filename=str, content=str, mode=str("w")):
     with open(str(filename), mode) as file:
         file.write(content)
-    Log(f"Saved file '{filename}' with content '{content}'", "FILE WRITE")
+    log(f"Saved file '{filename}' with content '{content}'", "FILE WRITE")
 
 # fix these with the new config file system
 
@@ -21,12 +21,12 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
             file.write(str(content))
             if newline == True:
                 file.write("\n")
-        Log(f"Wrote '{str(content)}' to file '{filename}'", "FILE WRITE")
+        log(f"Wrote '{str(content)}' to file '{filename}'", "FILE WRITE")
     except FileNotFoundError:
-        Log(f"!!! Could not write to file '{filename}' it was not found!!!", "FILE ERROR")
+        log(f"!!! Could not write to file '{filename}' it was not found!!!", "FILE ERROR")
 
     except:
-        Log(f"!!! Could not write to file '{filename}', unknown error!!!", "FILE ERROR")
+        log(f"!!! Could not write to file '{filename}', unknown error!!!", "FILE ERROR")
 
 
 def generateDataFile(data, filename=str(getConfigValue("defaultDataFile")), mode=str("a")):
@@ -43,62 +43,57 @@ def generateDataFile(data, filename=str(getConfigValue("defaultDataFile")), mode
         with open(filename, mode) as file:
             file.write(f"{[var for var in globals() if globals()[var] is data][0]}:{data}")
     else:
-        Debug("!!!   invalid data type   !!!", "ERROR")
+        debug("!!!   invalid data type   !!!", "ERROR")
 
 
 
-def createSimpleConfigFile(filename=str):
+def createConfigFile(filename=str):
     try:
         with open(str(filename), 'r') as file:
             pass
     except FileNotFoundError:
         try:
-            with open(str(filename), "w") as file:
-                file.write(f"filename: '{filename}'")
-                file.write("\n")
-            Log(f"Created config file '{filename}'", "FILE CREATION")
-        except:
-            Log(f"!!! Could not create config file '{filename}', unknown error!!!", "FILE ERROR")
+            config = configparser.ConfigParser()
+            config.read(filename)
+            section = "internal"
+            config.add_section(section)
+            
+            config.set(section, "filename", filename)
 
-def addToSimpleConfigFile(filename=str, id=[str, int], content=str, newline=bool(True)): # if trying to add a line that is the same a a line already in the file run an error instead of adding it anyway
+            with open(filename, "w") as configFile:
+                configFile.write(config.write(configFile))
+                log(f"created config file {filename}", "FILE CREATED")
+        except Exception as e:
+            log(f"!!! Could not create config file '{filename}', error {e} !!!", "FILE ERROR")
+
+def addToConfigFile(filename=str, id=[str, int], content=str, section=str("config")): # if trying to add a line that is the same a a line already in the file run an error instead of adding it anyway
     try:
-        with open(str(filename), "r") as file:
-            fileContent = file.read().splitlines()
-            fileContent.index(f"{str(id)}: '{str(content)}'")
-            Log(f"Could not add to config file '{filename}' it already contains '{str(content)}' at {str(id)}", "SOFT FILE ERROR")
-            return
-    except ValueError:
-        with open(str(filename), "a") as file:
-            file.write(f"{str(id)}: '{str(content)}'")
-            if newline == True:
-                file.write("\n")
-        Log(f"Added '{str(content)}' to config file '{filename}'", "FILE EDIT")
+        config = configparser.ConfigParser()
+        config.read(filename)
+        if config.has_section(section):
+            pass
+        else:
+            config.add_section(section)
+
+        config.set(section, str(id), str(content))
+        log(f"Added '{str(content)}' to config file '{filename}'", "FILE EDIT")
+        return
     except FileNotFoundError:
-        Log(f"!!! Could not add to config file '{filename}' it was not found!!!", "FILE ERROR")
+        log(f"!!! Could not add to config file '{filename}' it was not found!!!", "FILE ERROR")
 
-    except:
-        Log(f"!!! Could not add to config file '{filename}', unknown error!!!", "FILE ERROR")
+    except Exception as e:
+        log(f"!!! Could not add to config file '{filename}', error {e} !!!", "FILE ERROR")
 
-def removeFromSimpleConfigFile(filename=str, id=[str, int]):
+def removeFromConfigFile(filename=str, id=[str, int]):
     pass
 
-def getFromSimpleConfigFile(filename=str, id=[str, int]):
+def getFromConfigFile(filename=str, id=[str, int] , section=str("config")):
     try:
-        returnList = []
-        with open(str(filename), "r") as file:
-            fileContent = file.read().splitlines()
-        for line in fileContent:
-            if str(id) in line:
-                value = line.split("'")[1]
-                returnList.append(line)
-        if len(returnList) == 1:
-            returnList = str(returnList)
-        Log(f"Got '{str(returnList)}' from config file '{filename}'", "FILE GET")
-        return returnList
-    except:
-        Log(f"!!! Could not get from config file '{filename}', unknown error!!!", "FILE ERROR")
-                
+        config = configparser.ConfigParser()
+        config.read(filename)
 
-def loadSimpleConfigFile(filename=str):
-    pass
-        
+        value = config.get(section, id)
+    except Exception as e:
+        quit(f"!!! Could not get from config file, error: {e} !!!")
+
+    return value        
