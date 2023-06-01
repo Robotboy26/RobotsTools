@@ -2,7 +2,7 @@ import time
 import threading
 import os
 
-from RobotsTools.genConfigFile import *
+import RobotsTools.genConfigFile as gCF
 
 try:
     with open(defaultConfigFile, 'r') as file:

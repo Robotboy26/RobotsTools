@@ -1,7 +1,7 @@
 import os
-from RobotsTools.genConfigFile import genConfigFile, defaultConfigFile, dataLocation
+import RobotsTools.genConfigFile as gCF
 
-if os.path.exists(dataLocation):
+if os.path.exists(gCF.dataLocation):
     pass
 else:
     os.mkdir(dataLocation)
@@ -9,7 +9,7 @@ else:
 if os.path.exists(defaultConfigFile):
     pass
 else:
-    genConfigFile()
+    gCF.genConfig()
 
 from RobotsTools.main import *
 from RobotsTools.fileOperations import *
