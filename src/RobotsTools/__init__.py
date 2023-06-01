@@ -9,7 +9,7 @@ else:
 if os.path.exists(gCF.defaultConfigFile):
     pass
 else:
-    gCF.genConfig()
+    gCF.genConfigFile()
 
 from RobotsTools.main import *
 from RobotsTools.fileOperations import *

@@ -48,6 +48,18 @@ def generateDataFile(data, filename=str(gCF.getConfigValue("defaultDataFile")), 
 
 
 def createConfigFile(filename=str):
+    if filename[-4:] == ".ini":
+        pass
+    if filename[-4:] == ".txt":
+        quit("!!!   config file cannot be a .txt file (change it to .ini)   !!!")
+    if "." not in filename:
+        if filename[-3:] == "ini":
+            quit("!!!   config file is missing a . (change it to .ini)   !!!")
+        if filename[-3:] == "txt":
+            quit("!!!   config file is missing a . and has txt instead of ini (change it to .ini)   !!!")
+        filename = filename + ".ini"
+        log("needed to add .ini to the end of the config file name (plz add it in the code)", "FILE WARNING")
+
     try:
         with open(str(filename), 'r') as file:
             pass
@@ -76,6 +88,8 @@ def addToConfigFile(filename=str, id=[str, int], content=str, section=str("confi
             config.add_section(section)
 
         config.set(section, str(id), str(content))
+        with open(filename, "w") as configFile:
+                configFile.write(config.write(configFile))
         log(f"Added '{str(content)}' to config file '{filename}'", "FILE EDIT")
         return
     except FileNotFoundError:
