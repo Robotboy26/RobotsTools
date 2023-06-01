@@ -5,45 +5,45 @@ import os
 import RobotsTools.genConfigFile as gCF
 
 try:
-    with open(defaultConfigFile, 'r') as file:
+    with open(gCF.defaultConfigFile, 'r') as file:
         pass
 except:
-    genConfigFile()
+    gCF.genConfigFile()
 
 lock = threading.Lock()
 
 def setLogSettings(value=True):
-    changeConfigFile(defaultConfigFile, "LogSettings", value, "Str")
-    log(getConfigValue("LogSettings"), "CONFIG CHANGE")
+    gCF.changeConfigFile(gCF.defaultConfigFile, "LogSettings", value, "Str")
+    log(gCF.getConfigValue("LogSettings"), "CONFIG CHANGE")
 
 def setDebugToggle(value=True):
-    changeConfigFile(defaultConfigFile, "DebugToggle", value, "Str")
-    log(getConfigValue("DebugToggle"), "CONFIG CHANGE")
+    gCF.changeConfigFile(gCF.defaultConfigFile, "DebugToggle", value, "Str")
+    log(gCF.getConfigValue("DebugToggle"), "CONFIG CHANGE")
 
 def setClearLogFile(value=True):
-    changeConfigFile(defaultConfigFile, "ClearLogFile", value, "Str")
-    log(getConfigValue("ClearLogFile"), "CONFIG CHANGE")
+    gCF.changeConfigFile(gCF.defaultConfigFile, "ClearLogFile", value, "Str")
+    log(gCF.getConfigValue("ClearLogFile"), "CONFIG CHANGE")
 
 def setClearDataFile(value=True):
-    changeConfigFile(defaultConfigFile, "ClearDataFile", value, "Str")
-    log(getConfigValue("ClearDataFile"), "CONFIG CHANGE")
+    gCF.changeConfigFile(gCF.defaultConfigFile, "ClearDataFile", value, "Str")
+    log(gCF.getConfigValue("ClearDataFile"), "CONFIG CHANGE")
 
 def changeDefaultLogFile(filename=str):
-    changeConfigFile(defaultConfigFile, "defaultLogFile", filename, "Str")
-    log(getConfigValue("defaultLogFile"), "CONFIG CHANGE")
+    gCF.changeConfigFile(gCF.defaultConfigFile, "defaultLogFile", filename, "Str")
+    log(gCF.getConfigValue("defaultLogFile"), "CONFIG CHANGE")
 
 
-def formattedWrite(message, LogMessageType=getConfigValue("defaultLogMessageType")):
+def formattedWrite(message, LogMessageType=gCF.getConfigValue("defaultLogMessageType")):
     formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
     outMessage = str(f"[{formattedTime}] [{LogMessageType}] {message}")
     return outMessage
 
 
-def debug(message=str, LogMessageType=getConfigValue("defaultLogMessageType")):
-    if getConfigValue("DebugToggle") == True:
+def debug(message=str, LogMessageType=gCF.getConfigValue("defaultLogMessageType")):
+    if gCF.getConfigValue("DebugToggle") == True:
         print(formattedWrite(message, LogMessageType))
 
-def logFile(filename=str, ClearLogFile=bool(getConfigValue("ClearLogFile"))):
+def logFile(filename=str, ClearLogFile=bool(gCF.getConfigValue("ClearLogFile"))):
     changeDefaultLogFile(filename)
     if os.path.exists(filename):
         if ClearLogFile == True:
@@ -62,9 +62,9 @@ def truncateLogFile(filename=str):
         file.truncate(0)
 
 
-def log(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
+def log(message=str, LogMessageType=str(gCF.getConfigValue("defaultLogMessageType")), filename=str(gCF.getConfigValue("defaultLogFile"))):
     LogMessageType = LogMessageType.upper()
-    if getConfigValue("LogSettings") == True:
+    if gCF.getConfigValue("LogSettings") == True:
         try:
             debug(str(message), LogMessageType)
             with lock:
@@ -78,8 +78,8 @@ def log(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType"))
     else:
         return "LogSettings is False"
     
-def LogList(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
-    if getConfigValue("LogSettings") == True:
+def LogList(message=str, LogMessageType=str(gCF.getConfigValue("defaultLogMessageType")), filename=str(gCF.getConfigValue("defaultLogFile"))):
+    if gCF.getConfigValue("LogSettings") == True:
         try:
             for x in range(len(message)):
                 debug(f"{str(message[x])} as index {str(x)} of list {[var for var in globals() if globals()[var] is message][0]}", LogMessageType)

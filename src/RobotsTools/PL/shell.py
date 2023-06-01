@@ -1,7 +1,7 @@
 import RobotsTools as rt
 
-outputFile = f"{rt.dataLocation}/output.txt"
-varFile = f"{rt.dataLocation}/var.ini"
+outputFile = f"{rt.gCF.dataLocation}/output.txt"
+varFile = f"{rt.gCF.dataLocation}/var.ini"
 rt.logFile(outputFile)
 rt.setLogSettings(False)
 rt.createConfigFile(varFile)

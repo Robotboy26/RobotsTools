@@ -29,9 +29,9 @@ def writeToFile(filename=str, content=str, newline=bool(True), mode=str("a"),):
         log(f"!!! Could not write to file '{filename}', unknown error!!!", "FILE ERROR")
 
 
-def generateDataFile(data, filename=str(getConfigValue("defaultDataFile")), mode=str("a")):
+def generateDataFile(data, filename=str(gCF.getConfigValue("defaultDataFile")), mode=str("a")):
     with open(filename, "w") as file:
-        if getConfigValue("ClearDataFile") == True:
+        if gCF.getConfigValue("ClearDataFile") == True:
             file.truncate()
         else:
             pass
@@ -53,7 +53,7 @@ def createConfigFile(filename=str):
             pass
     except FileNotFoundError:
         try:
-            config = configparser.ConfigParser()
+            config = gCF.configparser.ConfigParser()
             config.read(filename)
             section = "internal"
             config.add_section(section)
@@ -68,7 +68,7 @@ def createConfigFile(filename=str):
 
 def addToConfigFile(filename=str, id=[str, int], content=str, section=str("config")): # if trying to add a line that is the same a a line already in the file run an error instead of adding it anyway
     try:
-        config = configparser.ConfigParser()
+        config = gCF.configparser.ConfigParser()
         config.read(filename)
         if config.has_section(section):
             pass
@@ -89,7 +89,7 @@ def removeFromConfigFile(filename=str, id=[str, int]):
 
 def getFromConfigFile(filename=str, id=[str, int] , section=str("config")):
     try:
-        config = configparser.ConfigParser()
+        config = gCF.configparser.ConfigParser()
         config.read(filename)
 
         value = config.get(section, id)
