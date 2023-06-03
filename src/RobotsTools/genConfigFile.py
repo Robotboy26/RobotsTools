@@ -19,16 +19,16 @@ def genConfigFile():
     configFileGlobal.set(defaultSection, "ClearDataFile", "True")
 
     with open(defaultConfigFile, "w") as configFile:
-        configFileGlobal.write(configFile)
+        configFile.write(configFileGlobal)
 
-def changeConfigFile(filename=str, id=str, content=str, type=str): # add logging
-    configFileGlobal = configparser.ConfigParser()
-    configFileGlobal.read(filename)
-
-    configFileGlobal.set(defaultSection, str(id), str(content))
-
-    with open(defaultConfigFile, "w") as configFile:
-        configFile.write(configFileGlobal.write(configFile))
+#def changeConfigFile(filename=str, id=str, content=str, type=str): # add logging # remove and change everything to just use the build in function in the file operations file
+#    configFileGlobal = configparser.ConfigParser()
+#    configFileGlobal.read(filename)
+#
+#    configFileGlobal.set(defaultSection, str(id), str(content))
+#
+#    with open(defaultConfigFile, "w") as configFile:
+#        configFile.write(configFileGlobal)
 
 def getConfigValue(request, section=defaultSection):
     # Create a ConfigParser object and read the config file

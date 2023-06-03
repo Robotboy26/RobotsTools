@@ -1,7 +1,7 @@
 import RobotsTools as rt
 
-outputFile = f"{rt.gCF.dataLocation}/output.txt"
-varFile = f"{rt.gCF.dataLocation}/var.ini"
+outputFile = f"{rt.dataLocation}/output.txt"
+varFile = f"{rt.dataLocation}/var.ini"
 rt.logFile(outputFile)
 rt.setLogSettings(False)
 rt.createConfigFile(varFile)
@@ -43,7 +43,7 @@ class Function:
             print("""missing the "and" after sub""")
         
     def fvar(textSplit):
-        rt.addToConfigFile(" ".join(textSplit[1:]), textSplit[1])
+        rt.addToConfigFile(varFile, " ".join(textSplit[1:]), textSplit[1])
 
 
 ###################################
