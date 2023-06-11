@@ -1,4 +1,4 @@
-from genConfigFile import defaultConfigFile
+from .genConfigFile import defaultConfigFile
 from fileOperations import addToConfigFile
 
 
