@@ -1,5 +1,5 @@
 from .genConfigFile import defaultConfigFile
-from fileOperations import addToConfigFile
+from .fileOperations import addToConfigFile
 
 
 def setLogSettings(value=True):

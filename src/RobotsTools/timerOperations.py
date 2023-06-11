@@ -1,4 +1,4 @@
-from RobotsTools.main import *
+from .main import *
 
 def startTimer(message=str(getConfigValue("defaultTimerMessage")), LogMessageType=str(getConfigValue("defaultTimerLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
     global startTime

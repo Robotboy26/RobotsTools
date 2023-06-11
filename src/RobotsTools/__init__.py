@@ -14,3 +14,5 @@ else:
 from RobotsTools.main import *
 from RobotsTools.fileOperations import *
 from RobotsTools.timerOperations import *
+from RobotsTools.setSettings import *
+from RobotsTools.shellIntigration import *
