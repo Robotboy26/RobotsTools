@@ -2,7 +2,7 @@ import time
 import threading
 import os
 
-from genConfigFile import genConfigFile, defaultConfigFile, getConfigValue
+from .genConfigFile import genConfigFile, defaultConfigFile, getConfigValue
 
 try:
     with open(defaultConfigFile, 'r') as file:
@@ -25,7 +25,7 @@ def debug(message=str, LogMessageType=getConfigValue("defaultLogMessageType")):
     if getConfigValue("DebugToggle") == True:
         print(formattedWrite(message, LogMessageType))
 
-from setSettings import changeDefaultLogFile
+from .setSettings import changeDefaultLogFile
 
 def logFile(filename=str, ClearLogFile=bool(getConfigValue("ClearLogFile"))):
     changeDefaultLogFile(filename)

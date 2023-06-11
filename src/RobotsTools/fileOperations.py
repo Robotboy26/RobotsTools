@@ -1,6 +1,6 @@
 import configparser
-from main import log, debug
-from genConfigFile import getConfigValue
+from .main import log, debug
+from .genConfigFile import getConfigValue
 
 # in the config file make it for .ini files instead of how it is now
 
