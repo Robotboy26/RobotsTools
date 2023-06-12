@@ -1,4 +1,5 @@
-
+from ..data import defaultConfigFile, defaultSection
+import configparser
 
 def getConfigValue(request, section=defaultSection):
     # Create a ConfigParser object and read the config file
