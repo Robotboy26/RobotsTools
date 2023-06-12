@@ -15,15 +15,25 @@ lock = threading.Lock()
 
 
 
-def formattedWrite(message, LogMessageType=getConfigValue("defaultLogMessageType")):
-    formattedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(time.time()))
-    outMessage = str(f"[{formattedTime}] [{LogMessageType}] {message}")
-    return outMessage
 
 
-def debug(message=str, LogMessageType=getConfigValue("defaultLogMessageType")):
-    if getConfigValue("DebugToggle") == True:
-        print(formattedWrite(message, LogMessageType))
+
+
+def log(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
+    LogMessageType = LogMessageType.upper()
+    if getConfigValue("LogSettings") == True:
+        try:
+            debug(str(message), LogMessageType)
+            with lock:
+                with open(filename, "a") as file:
+                    file.write(formattedWrite(str(message), LogMessageType))
+                    file.write("\n")
+            return "log secceeded"
+        except Exception as e:
+            debug(f"!!! Could not log: {str(e)}, you might need to setLogSettings !!!")
+            return e
+    else:
+        return "LogSettings is False"
 
 from .setSettings import changeDefaultLogFile
 
@@ -45,23 +55,6 @@ def truncateLogFile(filename=str):
     with open(filename, 'w') as file:
         file.truncate(0)
 
-
-def log(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
-    LogMessageType = LogMessageType.upper()
-    if getConfigValue("LogSettings") == True:
-        try:
-            debug(str(message), LogMessageType)
-            with lock:
-                with open(filename, "a") as file:
-                    file.write(formattedWrite(str(message), LogMessageType))
-                    file.write("\n")
-            return "log secceeded"
-        except Exception as e:
-            debug(f"!!! Could not log: {str(e)}, you might need to setLogSettings !!!")
-            return e
-    else:
-        return "LogSettings is False"
-    
 def LogList(message=str, LogMessageType=str(getConfigValue("defaultLogMessageType")), filename=str(getConfigValue("defaultLogFile"))):
     if getConfigValue("LogSettings") == True:
         try:
